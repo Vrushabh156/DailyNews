@@ -2,33 +2,32 @@ package com.appsvit.dailynews.ui.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.appsvit.dailynews.R
 import com.appsvit.dailynews.databinding.ActivityMainBinding
-import com.appsvit.dailynews.utils.NetworkUtil
-import com.appsvit.dailynews.utils.Status
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
-
-    @Inject
-    lateinit var networkUtil: NetworkUtil
+    private var _binding: ActivityMainBinding? = null
+    private val binding: ActivityMainBinding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        networkUtil
-            .observe(this) {
-                when (it) {
-                    Status.AVAILABLE -> binding.text.text = "Available"
-                    Status.UNAVAILABLE -> binding.text.text = "Unavailable"
-                    Status.LOSING -> binding.text.text = "Losing"
-                }
-            }
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navController = navHostFragment.navController
+        binding.bottomNav.setupWithNavController(navController)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
