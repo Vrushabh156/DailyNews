@@ -27,7 +27,6 @@
         android:background="@color/secondary"
         android:paddingTop="10dp"
         app:itemActiveIndicatorStyle="@color/secondary"
-        app:itemHorizontalTranslationEnabled="true"
         app:itemIconSize="25dp"
         app:itemIconTint="@color/main"
         app:itemTextColor="@color/main"
